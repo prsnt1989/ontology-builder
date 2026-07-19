@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8005:8005"
+    env_file: .env
+    depends_on:
+      web-search-mcp:
+        condition: service_healthy
+    volumes:
+      - ./backend/deployment:/app/deployment
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8005/api/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  web-search-mcp:
+    build: ./mcp-servers/web-search-mcp
+    ports:
+      - "8030:8030"
+    env_file: .env
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8030/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3005:3005"
+    depends_on:
+      backend:
+        condition: service_healthy
+    environment:
+      - VITE_API_URL=http://localhost:8005

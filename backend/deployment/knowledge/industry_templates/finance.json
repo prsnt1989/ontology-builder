@@ -1,0 +1,35 @@
+{
+  "industry": "Financial Services",
+  "common_object_types": [
+    {"name": "Account", "description": "Financial account (checking, savings, investment)"},
+    {"name": "Transaction", "description": "Financial transaction (credit/debit)"},
+    {"name": "Customer", "description": "Account holder or client"},
+    {"name": "Portfolio", "description": "Collection of investments"},
+    {"name": "SecurityInstrument", "description": "Stock, bond, or other traded instrument"},
+    {"name": "Trade", "description": "Buy/sell order for a security"},
+    {"name": "LoanApplication", "description": "Application for a loan"},
+    {"name": "RiskAssessment", "description": "Risk evaluation of a customer or portfolio"},
+    {"name": "ComplianceCase", "description": "Regulatory compliance investigation"},
+    {"name": "Branch", "description": "Physical or virtual service location"},
+    {"name": "Advisor", "description": "Financial advisor or relationship manager"},
+    {"name": "Alert", "description": "System-generated notification (fraud, threshold)"}
+  ],
+  "common_relationships": [
+    "Account → Customer (many_to_one): account owned by customer",
+    "Transaction → Account (many_to_one): transaction on account",
+    "Portfolio → Customer (many_to_one): portfolio for customer",
+    "Trade → Portfolio (many_to_one): trade in portfolio",
+    "LoanApplication → Customer (many_to_one): applied by customer",
+    "ComplianceCase → Customer (many_to_one): case regarding customer"
+  ],
+  "typical_lifecycles": {
+    "LoanApplication": ["submitted", "under_review", "approved", "declined", "disbursed", "closed"],
+    "Trade": ["pending", "submitted", "executed", "settled", "cancelled"],
+    "ComplianceCase": ["opened", "investigating", "escalated", "resolved", "closed"]
+  },
+  "compliance_notes": [
+    "SOX requires full audit trail on financial transactions",
+    "KYC/AML checks required on customer onboarding",
+    "Data retention policies vary by instrument type"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "industry": "Logistics & Supply Chain",
+  "common_object_types": [
+    {"name": "Shipment", "description": "Movement of goods from origin to destination"},
+    {"name": "Order", "description": "Customer or purchase order"},
+    {"name": "Warehouse", "description": "Storage facility"},
+    {"name": "Vehicle", "description": "Truck, ship, or other transport"},
+    {"name": "Route", "description": "Planned delivery path"},
+    {"name": "Driver", "description": "Person operating a vehicle"},
+    {"name": "Package", "description": "Individual package or container"},
+    {"name": "Carrier", "description": "Logistics service provider"},
+    {"name": "Inventory", "description": "Stock at a specific location"},
+    {"name": "DeliveryAttempt", "description": "Attempt to deliver a shipment"},
+    {"name": "ReturnRequest", "description": "Request to return goods"},
+    {"name": "Dock", "description": "Loading/unloading bay at a facility"}
+  ],
+  "common_relationships": [
+    "Shipment → Order (many_to_one): shipment fulfills order",
+    "Shipment → Vehicle (many_to_one): shipped on vehicle",
+    "Shipment → Route (many_to_one): shipment follows route",
+    "Package → Shipment (many_to_one): package in shipment",
+    "Inventory → Warehouse (many_to_one): stored at warehouse",
+    "DeliveryAttempt → Shipment (many_to_one): attempt for shipment"
+  ],
+  "typical_lifecycles": {
+    "Shipment": ["created", "picked", "packed", "in_transit", "out_for_delivery", "delivered", "returned"],
+    "Order": ["placed", "confirmed", "processing", "shipped", "delivered", "completed"],
+    "ReturnRequest": ["requested", "approved", "picked_up", "received", "refunded", "denied"]
+  }
+}

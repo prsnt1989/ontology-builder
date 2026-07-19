@@ -1,0 +1,35 @@
+{
+  "industry": "Healthcare",
+  "common_object_types": [
+    {"name": "Patient", "description": "Individual receiving care"},
+    {"name": "Provider", "description": "Healthcare professional (doctor, nurse)"},
+    {"name": "Encounter", "description": "Visit or interaction with a patient"},
+    {"name": "Diagnosis", "description": "Clinical diagnosis assigned to a patient"},
+    {"name": "Medication", "description": "Drug or treatment prescribed"},
+    {"name": "Prescription", "description": "Medication order for a patient"},
+    {"name": "LabResult", "description": "Laboratory test result"},
+    {"name": "Procedure", "description": "Medical procedure performed"},
+    {"name": "Facility", "description": "Hospital, clinic, or care location"},
+    {"name": "InsuranceClaim", "description": "Insurance billing claim"},
+    {"name": "CareTeam", "description": "Group of providers for a patient"},
+    {"name": "Appointment", "description": "Scheduled visit"}
+  ],
+  "common_relationships": [
+    "Encounter → Patient (many_to_one): encounter for patient",
+    "Encounter → Provider (many_to_one): seen by provider",
+    "Prescription → Patient (many_to_one): prescribed to patient",
+    "Prescription → Medication (many_to_one): prescription for medication",
+    "LabResult → Encounter (many_to_one): result from encounter",
+    "InsuranceClaim → Encounter (many_to_one): claim for encounter"
+  ],
+  "typical_lifecycles": {
+    "Encounter": ["scheduled", "checked_in", "in_progress", "completed", "billed"],
+    "InsuranceClaim": ["draft", "submitted", "under_review", "approved", "denied", "appealed"],
+    "Prescription": ["ordered", "dispensed", "active", "completed", "cancelled"]
+  },
+  "compliance_notes": [
+    "HIPAA requires audit trails on all PHI access",
+    "Patient data must have row-level security by care team",
+    "De-identification required for research/analytics use cases"
+  ]
+}

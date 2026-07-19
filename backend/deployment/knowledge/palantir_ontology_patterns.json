@@ -1,0 +1,40 @@
+{
+  "description": "Common Palantir Foundry ontology design patterns and best practices",
+  "patterns": {
+    "naming_conventions": {
+      "object_types": "PascalCase (e.g., WorkOrder, PurchaseOrder)",
+      "properties": "snake_case (e.g., created_at, order_number)",
+      "relationships": "camelCase verbs (e.g., assignedTo, belongsTo)",
+      "actions": "camelCase verbs (e.g., createOrder, approveRequest)"
+    },
+    "standard_properties": {
+      "audit_fields": ["created_at", "updated_at", "created_by", "updated_by"],
+      "soft_delete": ["is_deleted", "deleted_at"],
+      "versioning": ["version", "previous_version_id"],
+      "classification": ["status", "type", "category", "priority"]
+    },
+    "relationship_patterns": {
+      "ownership": "Entity belongsTo Owner (many_to_one)",
+      "hierarchy": "Child parentOf Parent (many_to_one, self-referential)",
+      "association": "Entity relatedTo Entity (many_to_many via link table)",
+      "temporal": "Entity supersedes PreviousEntity (one_to_one)"
+    },
+    "lifecycle_patterns": {
+      "linear": ["draft", "active", "completed", "archived"],
+      "approval": ["draft", "pending_approval", "approved", "rejected", "active"],
+      "incident": ["new", "assigned", "in_progress", "resolved", "closed"],
+      "order": ["created", "confirmed", "in_transit", "delivered", "invoiced", "paid"]
+    }
+  },
+  "best_practices": [
+    "Every object type should have a human-readable title_property",
+    "Use surrogate keys (auto-increment ID) as primary keys, with natural keys as indexed unique fields",
+    "Include audit fields (created_at, updated_at) on every object type",
+    "Model state as a lifecycle with explicit transitions, not just an enum field",
+    "Prefer many_to_one over many_to_many (use link objects for M:N with attributes)",
+    "Actions should have explicit preconditions to prevent invalid state transitions",
+    "Row-level security filters should reference user attributes, not hardcoded values",
+    "Validation rules should have clear error messages suitable for end users",
+    "Properties that are computed/derived should be marked as read-only in actions"
+  ]
+}

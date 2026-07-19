@@ -1,0 +1,20 @@
+# Secrets
+.env
+
+# Python
+**/.venv/
+**/__pycache__/
+*.pyc
+*.egg-info/
+
+# Node
+**/node_modules/
+frontend/dist/
+
+# Runtime data (machine-specific: session DBs, generated ontology outputs)
+backend/deployment/data/
+backend/deployment/outputs/
+
+# OS / editor
+.DS_Store
+*.log

@@ -1,0 +1,30 @@
+{
+  "industry": "Manufacturing",
+  "common_object_types": [
+    {"name": "WorkOrder", "description": "Production or maintenance work to be performed"},
+    {"name": "Equipment", "description": "Physical assets that produce or support production"},
+    {"name": "Product", "description": "Manufactured goods"},
+    {"name": "BillOfMaterials", "description": "Component list for a product"},
+    {"name": "Supplier", "description": "External vendor providing materials"},
+    {"name": "PurchaseOrder", "description": "Order placed with a supplier"},
+    {"name": "QualityInspection", "description": "Quality check on materials or products"},
+    {"name": "ProductionLine", "description": "Assembly or production line"},
+    {"name": "Shift", "description": "Work schedule period"},
+    {"name": "Operator", "description": "Person operating equipment"},
+    {"name": "MaintenanceRequest", "description": "Request for equipment maintenance"},
+    {"name": "Inventory", "description": "Stock levels of materials and products"}
+  ],
+  "common_relationships": [
+    "WorkOrder → Equipment (many_to_one): work order services equipment",
+    "WorkOrder → Operator (many_to_one): assigned to operator",
+    "Product → BillOfMaterials (one_to_many): product has BOM",
+    "PurchaseOrder → Supplier (many_to_one): order placed with supplier",
+    "Equipment → ProductionLine (many_to_one): equipment on line",
+    "QualityInspection → Product (many_to_one): inspection of product"
+  ],
+  "typical_lifecycles": {
+    "WorkOrder": ["draft", "scheduled", "in_progress", "completed", "verified"],
+    "PurchaseOrder": ["draft", "submitted", "approved", "ordered", "received", "invoiced"],
+    "QualityInspection": ["scheduled", "in_progress", "passed", "failed", "on_hold"]
+  }
+}
