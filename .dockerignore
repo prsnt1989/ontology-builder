@@ -1,0 +1,23 @@
+# Secrets — never send to the build context / image
+.env
+
+# Python
+**/.venv/
+**/__pycache__/
+*.pyc
+*.egg-info/
+
+# Node
+**/node_modules/
+**/dist/
+
+# Runtime data (machine-specific: session DBs, generated ontology outputs)
+backend/deployment/data/
+backend/deployment/outputs/
+
+# VCS / tooling / docs
+.git
+.claude
+*.log
+.DS_Store
+ONTOLOGY_BUILDER_Executive_Brief.pdf
