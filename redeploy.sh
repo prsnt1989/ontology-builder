@@ -12,7 +12,7 @@ set -euo pipefail
 #   ./redeploy.sh frontend   # redeploy frontend only
 ###############################################################################
 
-RESOURCE_GROUP="rg-onotology-builder"
+RESOURCE_GROUP="rg-ontology-builder"
 ACR_NAME="ontologybuilder"
 BACKEND_APP="ontology-backend"
 FRONTEND_APP="ontology-frontend"

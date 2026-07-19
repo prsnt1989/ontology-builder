@@ -17,7 +17,10 @@ class SQLiteBackend(DataStoreBackend):
         self._db = await aiosqlite.connect(self._db_path)
         self._db.row_factory = aiosqlite.Row
         await self._db.execute("PRAGMA foreign_keys = ON")
-        await self._db.execute("PRAGMA journal_mode = WAL")
+        # DELETE (rollback) journal, not WAL: WAL relies on shared-memory mmap that
+        # SMB/CIFS (Azure Files) doesn't support reliably. The DB lives on a mounted
+        # Azure Files share in Azure, and the backend runs as a single replica.
+        await self._db.execute("PRAGMA journal_mode = DELETE")
         await self._db.commit()
 
     async def _get_db(self) -> aiosqlite.Connection:
