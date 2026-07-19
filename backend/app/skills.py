@@ -46,8 +46,27 @@ def _parse_frontmatter(md_path: Path) -> dict[str, Any] | None:
         return None
 
 
+def _skill_body(md_path: Path) -> str:
+    """Return the markdown body of a SKILL.md (everything after the frontmatter)."""
+    text = md_path.read_text()
+    if text.startswith("---"):
+        parts = text.split("---", 2)
+        if len(parts) >= 3:
+            return parts[2].strip()
+    return text.strip()
+
+
+def _phases_for(metadata: dict[str, Any]) -> list[str]:
+    """Resolve the phase list for a skill (supports `phases: [..]` and legacy `phase`)."""
+    phases = metadata.get("phases")
+    if isinstance(phases, list) and phases:
+        return [str(p) for p in phases]
+    phase = metadata.get("phase")
+    return [str(phase)] if phase else []
+
+
 def list_advertised_skills() -> list[dict[str, Any]]:
-    """Return L1 skill metadata for the UI: name, description, phase."""
+    """Return L1 skill metadata for the UI: name, description, phase, phases."""
     skills: list[dict[str, Any]] = []
     if not _SKILLS_DIR.exists():
         return skills
@@ -56,11 +75,40 @@ def list_advertised_skills() -> list[dict[str, Any]]:
         if not fm or "name" not in fm:
             continue
         metadata = fm.get("metadata") or {}
+        phases = _phases_for(metadata)
         skills.append(
             {
                 "name": fm["name"],
                 "description": fm.get("description", ""),
-                "phase": metadata.get("phase"),
+                "phase": metadata.get("phase") or (phases[0] if phases else None),
+                "phases": phases,
             }
         )
     return skills
+
+
+# Cache: phase -> skill body (built once from disk).
+_phase_body_cache: dict[str, str] | None = None
+
+
+def skill_body_for_phase(phase: str) -> str | None:
+    """Return the SKILL.md body whose phases include `phase`, or None.
+
+    Used to inject skill guidance into a specialist's system prompt so the skill
+    actually shapes generation (the specialists use direct JSON-mode LLM calls, not
+    tool-calling agents, so progressive disclosure via `load_skill` doesn't apply).
+    """
+    global _phase_body_cache
+    if _phase_body_cache is None:
+        cache: dict[str, str] = {}
+        if _SKILLS_DIR.exists():
+            for skill_md in sorted(_SKILLS_DIR.glob("*/SKILL.md")):
+                fm = _parse_frontmatter(skill_md)
+                if not fm:
+                    continue
+                body = _skill_body(skill_md)
+                for p in _phases_for(fm.get("metadata") or {}):
+                    # First skill wins for a given phase (stable, alphabetical by dir).
+                    cache.setdefault(p, body)
+        _phase_body_cache = cache
+    return _phase_body_cache.get(phase)

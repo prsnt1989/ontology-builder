@@ -133,7 +133,7 @@ class IntakeSpecialist:
     async def _emit_output(self, session_id: str, intent: dict) -> dict[str, Any]:
         """Convert all collected answers into structured IntakeOutput."""
         user_msg = f"Collected answers from all 7 blocks:\n{json.dumps(intent, indent=2)}"
-        raw = await llm_json_call(EMITTER_SYSTEM_PROMPT, user_msg)
+        raw = await llm_json_call(EMITTER_SYSTEM_PROMPT, user_msg, skill_phase="intake")
 
         try:
             intake_output = IntakeOutput(**raw)

@@ -7,6 +7,7 @@ metadata:
   author: ontology-builder
   version: "1.0"
   phase: qa
+  phases: [qa]
 ---
 
 ## Rules

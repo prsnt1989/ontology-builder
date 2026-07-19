@@ -16,12 +16,26 @@ from agent_framework import Message
 from .maf_client import get_chat_client
 
 
+def _with_skill(system_prompt: str, skill_phase: str | None) -> str:
+    """Prepend the relevant skill's guidance to the system prompt, if any."""
+    if not skill_phase:
+        return system_prompt
+    # Lazy import avoids any import-order concerns; skills.py only imports agent_framework.
+    from ..skills import skill_body_for_phase
+
+    body = skill_body_for_phase(skill_phase)
+    if not body:
+        return system_prompt
+    return f"## Design guidance (skill)\n\n{body}\n\n---\n\n{system_prompt}"
+
+
 async def llm_call(
     system_prompt: str,
     user_message: str,
     *,
     response_format: dict | None = None,
     temperature: float = 0.3,
+    skill_phase: str | None = None,
 ) -> str:
     client = get_chat_client()
     options: dict[str, Any] = {"temperature": temperature}
@@ -30,7 +44,7 @@ async def llm_call(
 
     response = await client.get_response(
         [
-            Message("system", [system_prompt]),
+            Message("system", [_with_skill(system_prompt, skill_phase)]),
             Message("user", [user_message]),
         ],
         options=options,
@@ -43,11 +57,13 @@ async def llm_json_call(
     user_message: str,
     *,
     temperature: float = 0.3,
+    skill_phase: str | None = None,
 ) -> dict:
     raw = await llm_call(
         system_prompt,
         user_message,
         response_format={"type": "json_object"},
         temperature=temperature,
+        skill_phase=skill_phase,
     )
     return json.loads(raw)

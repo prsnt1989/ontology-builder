@@ -33,7 +33,7 @@ async def run(ontology: dict[str, Any], actions_rules: dict[str, Any], update_pl
 
     prompt = UPDATE_DESIGN_PROMPT % PATCH_OPS_REFERENCE
     try:
-        plan = await llm_json_call(prompt, user_msg)
+        plan = await llm_json_call(prompt, user_msg, skill_phase="update_design")
     except Exception as e:  # noqa: BLE001
         logger.warning("Update designer failed: %s", e)
         return {"patches": [], "applied": 0, "reasoning": f"error: {e}"}

@@ -7,6 +7,7 @@ metadata:
   author: ontology-builder
   version: "1.0"
   phase: actions_rules
+  phases: [actions_rules, update_actions_rules]
 ---
 
 ## Actions

@@ -162,6 +162,7 @@ export interface SkillInfo {
   name: string
   description: string
   phase: string | null
+  phases?: string[]
 }
 
 export async function listSkills(): Promise<{ skills: SkillInfo[] }> {

@@ -14,4 +14,4 @@ async def run(context: dict[str, Any]) -> dict[str, Any]:
         f"User Roles:\n{json.dumps(context.get('user_roles', []), indent=2)}\n\n"
         f"Actions (already defined):\n{json.dumps(context.get('actions', []), indent=2)}"
     )
-    return await llm_json_call(PERMISSION_DESIGNER_PROMPT, user_msg)
+    return await llm_json_call(PERMISSION_DESIGNER_PROMPT, user_msg, skill_phase="actions_rules")

@@ -13,4 +13,4 @@ async def run(context: dict[str, Any]) -> dict[str, Any]:
         f"Company intake:\n{json.dumps(context['intake'], indent=2)}\n\n"
         f"Search results:\n{json.dumps(context.get('search_results', []), indent=2)}"
     )
-    return await llm_json_call(DOMAIN_SYNTHESIZER_PROMPT, user_msg)
+    return await llm_json_call(DOMAIN_SYNTHESIZER_PROMPT, user_msg, skill_phase="research")

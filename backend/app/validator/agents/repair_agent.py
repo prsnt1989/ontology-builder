@@ -102,7 +102,7 @@ async def run(context: dict[str, Any]) -> dict[str, Any]:
     )
 
     # Step 1: LLM plans the patches
-    plan = await llm_json_call(PLANNER_PROMPT, user_msg)
+    plan = await llm_json_call(PLANNER_PROMPT, user_msg, skill_phase="validation")
     patches = plan.get("patches", [])
     reasoning = plan.get("reasoning", "")
 

@@ -48,4 +48,4 @@ async def run(context: dict[str, Any]) -> dict[str, Any]:
         f"Object types:\n{json.dumps(context['object_types'], indent=2)}\n\n"
         f"Recommended relationships from research:\n{json.dumps(context.get('recommended_relationships', []), indent=2)}"
     )
-    return await llm_json_call(SYSTEM_PROMPT, user_msg)
+    return await llm_json_call(SYSTEM_PROMPT, user_msg, skill_phase="design")

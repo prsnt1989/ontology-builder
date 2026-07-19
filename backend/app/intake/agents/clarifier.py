@@ -99,7 +99,7 @@ async def format_block_questions(
 
     user_msg += f"\nREMINDER: Use \"{company_name}\" (the FULL company name) in every question. Industry is \"{industry}\". Number questions starting at 1. Use the company research to make options specific to what this company actually does."
 
-    tailored = await llm_call(CONTEXTUAL_QUESTIONS_PROMPT, user_msg)
+    tailored = await llm_call(CONTEXTUAL_QUESTIONS_PROMPT, user_msg, skill_phase="intake")
 
     question_ids = [q["id"] for q in unanswered]
     presented_questions = _extract_presented_questions(tailored, question_ids)

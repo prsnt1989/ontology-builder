@@ -54,4 +54,4 @@ async def run(context: dict[str, Any]) -> dict[str, Any]:
         f"Industry: {context.get('industry', 'Unknown')}\n"
         f"Domain vocabulary: {json.dumps(context.get('domain_vocabulary', {}), indent=2)}"
     )
-    return await llm_json_call(SYSTEM_PROMPT, user_msg)
+    return await llm_json_call(SYSTEM_PROMPT, user_msg, skill_phase="design")

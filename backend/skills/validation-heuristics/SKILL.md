@@ -7,6 +7,7 @@ metadata:
   author: ontology-builder
   version: "1.0"
   phase: validation
+  phases: [validation, update_validation]
 ---
 
 ## Completeness checks

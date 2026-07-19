@@ -18,6 +18,14 @@ export function SkillsPanel({ activePhase }: Props) {
 
   if (skills.length === 0) return null
 
+  // A skill is active if the current phase (or its build-equivalent, e.g.
+  // `update_design` → `design`) is among the skill's phases.
+  const normalized = activePhase.replace(/^update_/, '')
+  const isActive = (s: SkillInfo) => {
+    const phases = s.phases && s.phases.length > 0 ? s.phases : s.phase ? [s.phase] : []
+    return phases.includes(activePhase) || phases.includes(normalized)
+  }
+
   return (
     <div>
       <div className="flex items-center gap-1.5 px-2.5 pb-1 pt-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
@@ -26,7 +34,7 @@ export function SkillsPanel({ activePhase }: Props) {
       </div>
       <div className="space-y-1">
         {skills.map((s) => {
-          const active = !!s.phase && s.phase === activePhase
+          const active = isActive(s)
           return (
             <div
               key={s.name}

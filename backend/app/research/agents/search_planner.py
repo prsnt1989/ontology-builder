@@ -10,4 +10,4 @@ from ..prompt import SEARCH_PLANNER_PROMPT
 async def run(context: dict[str, Any]) -> dict[str, Any]:
     """Plan search queries based on intake data."""
     user_msg = f"Company intake:\n{json.dumps(context['intake'], indent=2)}"
-    return await llm_json_call(SEARCH_PLANNER_PROMPT, user_msg)
+    return await llm_json_call(SEARCH_PLANNER_PROMPT, user_msg, skill_phase="research")
